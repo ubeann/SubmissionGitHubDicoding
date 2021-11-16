@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splash_detail">Logo Aplikasi</string>
+    <string name="user_name">Name</string>
+    <string name="user_username">\@username</string>
+</resources>
