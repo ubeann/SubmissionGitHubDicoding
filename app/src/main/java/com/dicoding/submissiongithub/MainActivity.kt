@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,9 +36,9 @@ class MainActivity : AppCompatActivity() {
             val dataUsername = resources.getStringArray(R.array.username)
             val dataCompany = resources.getStringArray(R.array.company)
             val dataLocation = resources.getStringArray(R.array.location)
-            val dataRepository = resources.getIntArray(R.array.repository)
-            val dataFollower = resources.getIntArray(R.array.followers)
-            val dataFollowing = resources.getIntArray(R.array.following)
+            val dataRepository = resources.getStringArray(R.array.repository)
+            val dataFollower = resources.getStringArray(R.array.followers)
+            val dataFollowing = resources.getStringArray(R.array.following)
             val listUser = ArrayList<User>()
             for (i in dataName.indices) {
                 val user = User(dataAvatar.getResourceId(i, -1), dataName[i], dataUsername[i], dataCompany[i], dataLocation[i], dataRepository[i], dataFollower[i], dataFollowing[i])
@@ -65,7 +64,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSelectedUser(user: User) {
-        val intent = Intent(this@MainActivity, SplashActivity::class.java)
+        val intent = Intent(this@MainActivity, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.EXTRA_USER, user)
         startActivity(intent)
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
