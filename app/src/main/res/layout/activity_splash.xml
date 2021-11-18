@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:padding="64dp"
     android:background="@color/black"
-    tools:context=".SplashActivity">
+    tools:context=".SplashActivity"
+    tools:ignore="Overdraw">
 
     <ImageView
         android:layout_width="match_parent"

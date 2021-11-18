@@ -6,10 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 
 class DetailActivity : AppCompatActivity() {
-    // Setup Variable
-    companion object {
-        const val EXTRA_USER = "extra_user"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +33,10 @@ class DetailActivity : AppCompatActivity() {
         repository.text = user.repository
         following.text = user.following
         followers.text = user.follower
+    }
 
+    // Setup Variable
+    companion object {
+        const val EXTRA_USER = "extra_user"
     }
 }

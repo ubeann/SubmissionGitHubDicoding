@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                 val user = User(dataAvatar.getResourceId(i, -1), dataName[i], dataUsername[i], dataCompany[i], dataLocation[i], dataRepository[i], dataFollower[i], dataFollowing[i])
                 listUser.add(user)
             }
+            dataAvatar.recycle()
             return listUser
         }
 

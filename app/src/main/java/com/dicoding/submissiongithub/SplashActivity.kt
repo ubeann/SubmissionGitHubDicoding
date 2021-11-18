@@ -1,9 +1,11 @@
 package com.dicoding.submissiongithub
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     // Variable Setup
     private val loadingTime:Long = 5000 //Delay of 5 seconds
