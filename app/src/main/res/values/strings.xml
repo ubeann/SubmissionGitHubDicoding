@@ -12,6 +12,9 @@
     <string name="user_followers">Followers</string>
     <string name="followers">Followers</string>
 
+    <string name="search">Search</string>
+    <string name="search_hint">Masukkan username</string>
+
     <!-- Other string resources-->
     <string-array name="username">
         <item>JakeWharton</item>

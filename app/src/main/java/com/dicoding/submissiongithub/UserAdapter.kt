@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class UserAdapter(private val listUser: ArrayList<User>) : RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
+class UserAdapter(private val listDetailUserResponse: List<DetailUserResponse?>) : RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     class ListViewHolder(itemView:View): RecyclerView.ViewHolder(itemView) {
@@ -22,17 +23,18 @@ class UserAdapter(private val listUser: ArrayList<User>) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val (avatar, name, username) = listUser[position]
-        holder.userAvatar.setImageResource(avatar)
-        holder.userName.text = name
-        holder.userUsername.text = username
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUser[holder.adapterPosition]) }
+        Glide.with(holder.userAvatar.context)
+            .load(listDetailUserResponse[position]?.avatarUrl)
+            .into(holder.userAvatar)
+        holder.userName.text = listDetailUserResponse[position]?.name
+        holder.userUsername.text = listDetailUserResponse[position]?.login
+        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listDetailUserResponse[holder.adapterPosition]) }
     }
 
-    override fun getItemCount(): Int = listUser.size
+    override fun getItemCount(): Int = listDetailUserResponse.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: User)
+        fun onItemClicked(data: DetailUserResponse?)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {

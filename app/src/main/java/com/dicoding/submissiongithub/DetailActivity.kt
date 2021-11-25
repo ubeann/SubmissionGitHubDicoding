@@ -12,7 +12,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         // Receive data
-        val user = intent.getParcelableExtra<User>(EXTRA_USER) as User
+        val user = intent.getParcelableExtra<DetailUserResponse>(EXTRA_USER)
 
         // Setup Widget Variable
         val avatar:ImageView = findViewById(R.id.user_avatar)
@@ -24,15 +24,15 @@ class DetailActivity : AppCompatActivity() {
         val following:TextView = findViewById(R.id.user_following)
         val followers:TextView = findViewById(R.id.user_followers)
 
-        // Set data to activity
-        avatar.setImageResource(user.avatar)
-        name.text = user.name
-        username.text = user.username
-        company.text = user.company
-        location.text = user.location
-        repository.text = user.repository
-        following.text = user.following
-        followers.text = user.follower
+//        // Set data to activity
+//        avatar.setImageResource(user.avatar)
+//        name.text = user.name
+//        username.text = user.username
+//        company.text = user.company
+//        location.text = user.location
+//        repository.text = user.repository
+//        following.text = user.following
+//        followers.text = user.follower
     }
 
     // Setup Variable
