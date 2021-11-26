@@ -11,7 +11,6 @@
     <string name="following">Following</string>
     <string name="user_followers">Followers</string>
     <string name="followers">Followers</string>
-
     <string name="search">Search</string>
     <string name="search_hint">Masukkan username</string>
     <string name="notification_search">Ditemukan %1$d akun dengan username %2$s</string>

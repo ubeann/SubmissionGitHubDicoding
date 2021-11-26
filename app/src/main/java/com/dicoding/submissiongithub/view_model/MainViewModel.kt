@@ -24,7 +24,7 @@ class MainViewModel : ViewModel() {
         getListUser()
     }
 
-    fun getListUser() {
+    private fun getListUser() {
         isLoading.value = true
         val client = ApiConfig.getApiService().getUsers()
         client.enqueue(object : Callback<List<UsersResponse>> {

@@ -15,6 +15,18 @@ interface ApiService {
         @Path("username") username: String
     ): Call<DetailUserResponse>
 
+    @GET("/users/{username}/followers")
+    @Headers("Authorization: token $personalAccessToken")
+    fun getFollowersUser(
+        @Path("username") username: String
+    ): Call<List<UsersResponse>>
+
+    @GET("/users/{username}/following")
+    @Headers("Authorization: token $personalAccessToken")
+    fun getFollowingUser(
+        @Path("username") username: String
+    ): Call<List<UsersResponse>>
+
     @GET("/search/users")
     @Headers("Authorization: token $personalAccessToken")
     fun searchUser(
@@ -22,6 +34,6 @@ interface ApiService {
     ): Call<SearchResponse>
 
     companion object {
-        private const val personalAccessToken: String = "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"
+        private const val personalAccessToken: String = "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"
     }
 }
