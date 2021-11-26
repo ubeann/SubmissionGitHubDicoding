@@ -8,13 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.submissiongithub.adapter.UserAdapter
 import com.dicoding.submissiongithub.databinding.ActivityMainBinding
+import com.dicoding.submissiongithub.view_model.MainViewModel
+import com.dicoding.submissiongithub.response.UsersResponse
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     // Variable Setup
@@ -32,16 +34,33 @@ class MainActivity : AppCompatActivity() {
         actionBar?.title = title
 
         // Setup list users
-//        binding.mainListUser.setHasFixedSize(true)
+        binding.mainListUser.layoutManager = LinearLayoutManager(this)
+        binding.mainListUser.setHasFixedSize(true)
+        if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            binding.mainListUser.layoutManager = GridLayoutManager(this, 2)
+        } else {
+            binding.mainListUser.layoutManager = LinearLayoutManager(this)
+        }
 
         // Observe list user
-        mainViewModel.listDetailUser.observe(this, {
+        mainViewModel.listUser.observe(this, {
             showListUser(it)
         })
 
         // Observe loading
         mainViewModel.isLoading.observe(this, {
             showLoading(it)
+        })
+
+        // Observe notification
+        mainViewModel.notificationText.observe(this, {
+            it.getContentIfNotHandled()?.let { text ->
+                Snackbar.make(
+                    binding.root,
+                    text,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         })
     }
 
@@ -50,13 +69,15 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.search_menu, menu)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.search).actionView as SearchView
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem.actionView as SearchView
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                Toast.makeText(this@MainActivity, query, Toast.LENGTH_SHORT).show()
+                mainViewModel.searchUser(query, getString(R.string.notification_search), getString(R.string.notification_search_not_found))
+                searchView.clearFocus()
                 return true
             }
 
@@ -67,23 +88,18 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun showListUser(listUser: List<DetailUserResponse?>) {
-        binding.mainListUser.layoutManager = LinearLayoutManager(this)
+    private fun showListUser(listUser: List<UsersResponse>) {
         val userAdapter = UserAdapter(listUser)
         binding.mainListUser.adapter = userAdapter
+        mainViewModel.isLoading.postValue(false)
         userAdapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: DetailUserResponse?) {
+            override fun onItemClicked(data: UsersResponse) {
                 showSelectedUser(data)
             }
         })
-        if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.mainListUser.layoutManager = GridLayoutManager(this, 2)
-        } else {
-            binding.mainListUser.layoutManager = LinearLayoutManager(this)
-        }
     }
 
-    private fun showSelectedUser(user: DetailUserResponse?) {
+    private fun showSelectedUser(user: UsersResponse) {
         val intent = Intent(this@MainActivity, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_USER, user)
         startActivity(intent)

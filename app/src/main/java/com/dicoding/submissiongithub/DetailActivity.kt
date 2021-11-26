@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import com.dicoding.submissiongithub.response.DetailUserResponse
+import com.dicoding.submissiongithub.response.UsersResponse
 
 class DetailActivity : AppCompatActivity() {
 
@@ -12,7 +14,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         // Receive data
-        val user = intent.getParcelableExtra<DetailUserResponse>(EXTRA_USER)
+        val user = intent.getParcelableExtra<UsersResponse>(EXTRA_USER)
 
         // Setup Widget Variable
         val avatar:ImageView = findViewById(R.id.user_avatar)

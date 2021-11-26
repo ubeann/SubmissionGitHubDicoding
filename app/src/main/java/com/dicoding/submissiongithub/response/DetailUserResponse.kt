@@ -1,4 +1,4 @@
-package com.dicoding.submissiongithub
+package com.dicoding.submissiongithub.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
