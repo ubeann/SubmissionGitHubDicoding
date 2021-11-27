@@ -34,6 +34,6 @@ interface ApiService {
     ): Call<SearchResponse>
 
     companion object {
-        private const val personalAccessToken: String = "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"
+        private const val personalAccessToken: String = "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"
     }
 }

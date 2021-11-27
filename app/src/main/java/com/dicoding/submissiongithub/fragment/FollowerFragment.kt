@@ -15,9 +15,8 @@ import com.dicoding.submissiongithub.databinding.FragmentFollowerBinding
 import com.dicoding.submissiongithub.response.UsersResponse
 import com.dicoding.submissiongithub.view_model.DetailViewModel
 
-class FollowerFragment(username: String) : Fragment() {
+class FollowerFragment : Fragment() {
     // Setup variable
-    private val user = username
     private lateinit var binding: FragmentFollowerBinding
     private lateinit var detailViewModel: DetailViewModel
 
@@ -27,7 +26,9 @@ class FollowerFragment(username: String) : Fragment() {
     ): View {
         // Setup view model
         detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
-        detailViewModel.getFollowers(user)
+        arguments?.getString("username")?.let {
+            detailViewModel.getFollowers(it)
+        }
 
         // Inflate the layout for this fragment
         binding = FragmentFollowerBinding.inflate(inflater, container, false)
@@ -45,6 +46,30 @@ class FollowerFragment(username: String) : Fragment() {
         detailViewModel.listFollower.observe(viewLifecycleOwner, {
             showListUser(it, view.context)
         })
+
+        // Observe loading
+        detailViewModel.isLoading.observe(viewLifecycleOwner, {
+            showLoading(it)
+        })
+    }
+
+    fun newInstance(username: String) : FollowerFragment {
+        // Setup data
+        val bundle = Bundle()
+        bundle.putString("username", username)
+
+        // Set fragment
+        val fragment = FollowerFragment()
+        fragment.arguments = bundle
+        return fragment
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
     private fun showListUser(listUser: List<UsersResponse>, context: Context) {

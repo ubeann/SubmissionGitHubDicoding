@@ -14,8 +14,8 @@ class SectionsPagerAdapter(activity: AppCompatActivity, username: String) : Frag
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
         when (position) {
-            0 -> fragment = FollowingFragment(user)
-            1 -> fragment = FollowerFragment(user)
+            0 -> fragment = FollowingFragment().newInstance(user)
+            1 -> fragment = FollowerFragment().newInstance(user)
         }
         return fragment as Fragment
     }
