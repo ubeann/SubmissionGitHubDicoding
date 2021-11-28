@@ -17,12 +17,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailActivity : AppCompatActivity() {
     // Variable Setup
     private val detailViewModel by viewModels<DetailViewModel>()
-    private lateinit var binding: ActivityDetailBinding
+    private var binding: ActivityDetailBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         // Setup title action bar
         val actionBar = supportActionBar
@@ -30,64 +30,88 @@ class DetailActivity : AppCompatActivity() {
         // Receive data
         val user = intent.getParcelableExtra<UsersResponse>(EXTRA_USER)
 
-        // Implement user data
-        user?.let { userData ->
-            // Set title
-            actionBar?.title = userData.login
+        binding?.let { binding->
+            // Implement user data
+            user?.let { userData ->
+                // Set title
+                actionBar?.title = userData.login
 
-            // Initiate view model
-            detailViewModel.getDetailUser(userData.login)
+                // Initiate view model
+                detailViewModel.getDetailUser(userData.login)
 
-            // Observe notification
-            detailViewModel.notificationText.observe(this, {
-                it.getContentIfNotHandled()?.let { text ->
-                    Snackbar.make(
-                        binding.root,
-                        text,
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-            })
+                // Observe notification
+                detailViewModel.notificationText.observe(this, {
+                    it.getContentIfNotHandled()?.let { text ->
+                        showSnackBar(binding.root, text)
+                    }
+                })
 
-            // Observe loading
-            detailViewModel.isLoading.observe(this, {
-                showLoading(it)
-            })
+                // Observe error
+                detailViewModel.isError.observe(this, {
+                    it.getContentIfNotHandled()?.let { _ ->
+                        showSnackBar(binding.root, "Terjadi kesalahan, silahkan coba lagi")
+                    }
+                })
 
-            // Observe detail user
-            detailViewModel.detailUser.observe(this, {
-                setDetailUser(it)
-            })
+                // Observe loading
+                detailViewModel.isLoading.observe(this, {
+                    showLoading(it)
+                })
 
-            // Viewpager2
-            val sectionsPagerAdapter = SectionsPagerAdapter(this, userData.login)
-            binding.viewPager.adapter = sectionsPagerAdapter
-            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                tab.text = resources.getString(TAB_TITLES[position])
-            }.attach()
+                // Observe detail user
+                detailViewModel.detailUser.observe(this, {
+                    setDetailUser(it)
+                })
+
+                // Viewpager2
+                val sectionsPagerAdapter = SectionsPagerAdapter(this, userData.login)
+                binding.viewPager.adapter = sectionsPagerAdapter
+                TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                    tab.text = resources.getString(TAB_TITLES[position])
+                }.attach()
+            }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 
     private fun setDetailUser(user: DetailUserResponse) {
         // Set data
-        Glide.with(binding.userAvatar.context)
-            .load(user.avatarUrl)
-            .into(binding.userAvatar)
-        binding.userName.text = user.name
-        binding.userUsername.text = user.login
-        binding.userCompany.text = user.company
-        binding.userLocation.text = user.location
-        binding.userRepository.text = user.publicRepos.toString()
-        binding.userFollowing.text = user.following.toString()
-        binding.userFollowers.text = user.followers.toString()
+        binding?.let { binding ->
+            Glide.with(binding.userAvatar.context)
+                .load(user.avatarUrl)
+                .placeholder(R.drawable.ic_baseline_downloading_24)
+                .error(R.drawable.ic_baseline_error_24)
+                .into(binding.userAvatar)
+            with(binding) {
+                userName.text = user.name
+                userUsername.text = user.login
+                userCompany.text = user.company
+                userLocation.text = user.location
+                userRepository.text = user.publicRepos.toString()
+                userFollowing.text = user.following.toString()
+                userFollowers.text = user.followers.toString()
+            }
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
+            binding?.progressBar?.visibility = View.VISIBLE
         } else {
-            binding.progressBar.visibility = View.GONE
+            binding?.progressBar?.visibility = View.GONE
         }
+    }
+
+    private fun showSnackBar(view: View, text: String) {
+        Snackbar.make(
+            view,
+            text,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     // Setup Variable

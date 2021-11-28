@@ -4,12 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/activity_detail.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/activity_favorite.xml" value="0.35260416666666666" />
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/activity_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/activity_splash.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/detail_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/fragment_favorite.xml" value="0.35260416666666666" />
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/fragment_follower.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/fragment_following.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/fragment_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/list_item_user.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/layout/test.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/menu/menu_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Kuliah/MobPrak/SubmissionGitHub/app/src/main/res/menu/search_menu.xml" value="0.36666666666666664" />
       </map>
     </option>

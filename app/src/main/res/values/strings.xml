@@ -15,4 +15,8 @@
     <string name="search_hint">Masukkan username</string>
     <string name="notification_search">Ditemukan %1$d akun dengan username %2$s</string>
     <string name="notification_search_not_found">Tidak ditemukan akun dengan username %s</string>
+    <string name="settings">settings</string>
+    <string name="favorite">favorite</string>
+    <string name="not_found">Tidak ada %s</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

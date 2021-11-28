@@ -24,6 +24,8 @@ class UserAdapter(private val listUserResponse: List<UsersResponse>) : RecyclerV
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Glide.with(holder.userAvatar.context)
             .load(listUserResponse[position].avatarUrl)
+            .placeholder(R.drawable.ic_baseline_downloading_24)
+            .error(R.drawable.ic_baseline_error_24)
             .into(holder.userAvatar)
         holder.userUsername.text = listUserResponse[position].login
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUserResponse[holder.adapterPosition]) }

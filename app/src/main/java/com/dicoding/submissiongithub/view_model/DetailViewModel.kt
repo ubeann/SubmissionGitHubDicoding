@@ -24,6 +24,8 @@ class DetailViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
     private val _notificationText = MutableLiveData<Event<String>>()
     val notificationText: LiveData<Event<String>> = _notificationText
+    private val _isError = MutableLiveData<Event<String>>()
+    val isError: LiveData<Event<String>> = _isError
 
     fun getDetailUser(username: String) {
         _isLoading.value = true
@@ -39,14 +41,14 @@ class DetailViewModel : ViewModel() {
                         _isLoading.value = false
                     }
                 } else {
-                    _notificationText.value = Event(response.message().toString())
+                    _isError.value = Event(response.message().toString())
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
                 _isLoading.value = false
-                _notificationText.value = Event(t.message.toString())
+                _isError.value = Event(t.message.toString())
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
@@ -66,14 +68,14 @@ class DetailViewModel : ViewModel() {
                         _isLoading.value = false
                     }
                 } else {
-                    _notificationText.value = Event(response.message().toString())
+                    _isError.value = Event(response.message().toString())
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<List<UsersResponse>>, t: Throwable) {
                 _isLoading.value = false
-                _notificationText.value = Event(t.message.toString())
+                _isError.value = Event(t.message.toString())
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
@@ -93,14 +95,14 @@ class DetailViewModel : ViewModel() {
                         _isLoading.value = false
                     }
                 } else {
-                    _notificationText.value = Event(response.message().toString())
+                    _isError.value = Event(response.message().toString())
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<List<UsersResponse>>, t: Throwable) {
                 _isLoading.value = false
-                _notificationText.value = Event(t.message.toString())
+                _isError.value = Event(t.message.toString())
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })

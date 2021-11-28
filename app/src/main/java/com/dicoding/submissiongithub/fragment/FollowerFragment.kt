@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.submissiongithub.DetailActivity
+import com.dicoding.submissiongithub.R
 import com.dicoding.submissiongithub.adapter.UserAdapter
 import com.dicoding.submissiongithub.databinding.FragmentFollowerBinding
 import com.dicoding.submissiongithub.response.UsersResponse
@@ -26,7 +27,7 @@ class FollowerFragment : Fragment() {
     ): View {
         // Setup view model
         detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
-        arguments?.getString("username")?.let {
+        arguments?.getString(KEY)?.let {
             detailViewModel.getFollowers(it)
         }
 
@@ -45,6 +46,7 @@ class FollowerFragment : Fragment() {
         // Observe list follower
         detailViewModel.listFollower.observe(viewLifecycleOwner, {
             showListUser(it, view.context)
+            showNotFound(it.isEmpty())
         })
 
         // Observe loading
@@ -56,7 +58,7 @@ class FollowerFragment : Fragment() {
     fun newInstance(username: String) : FollowerFragment {
         // Setup data
         val bundle = Bundle()
-        bundle.putString("username", username)
+        bundle.putString(KEY, username)
 
         // Set fragment
         val fragment = FollowerFragment()
@@ -65,11 +67,12 @@ class FollowerFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showNotFound(isNotFound: Boolean) {
+        binding.notFound.text = if (isNotFound) getString(R.string.not_found, "followers") else "followers"
+        binding.notFound.visibility = if (isNotFound) View.VISIBLE else View.GONE
     }
 
     private fun showListUser(listUser: List<UsersResponse>, context: Context) {
@@ -86,5 +89,9 @@ class FollowerFragment : Fragment() {
         val intent = Intent(context, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_USER, user)
         startActivity(intent)
+    }
+
+    companion object {
+        private const val KEY = "username"
     }
 }
