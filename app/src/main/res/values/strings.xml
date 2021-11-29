@@ -19,4 +19,5 @@
     <string name="favorite">favorite</string>
     <string name="not_found">Tidak ada %s</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="delete">delete</string>
 </resources>

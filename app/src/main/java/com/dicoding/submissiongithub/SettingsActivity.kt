@@ -16,8 +16,8 @@ import com.dicoding.submissiongithub.view_model.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
     // Variable Setup
-    private var binding: ActivitySettingsBinding? = null
     private val title:String = "Settings"
+    private var binding: ActivitySettingsBinding? = null
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
     private lateinit var preferences: SettingPreferences
     private lateinit var settingsViewModel: SettingsViewModel

@@ -5,24 +5,31 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.dicoding.submissiongithub.adapter.SectionsPagerAdapter
 import com.dicoding.submissiongithub.databinding.ActivityDetailBinding
+import com.dicoding.submissiongithub.factory.FavoriteViewModelFactory
 import com.dicoding.submissiongithub.response.DetailUserResponse
 import com.dicoding.submissiongithub.response.UsersResponse
 import com.dicoding.submissiongithub.view_model.DetailViewModel
+import com.dicoding.submissiongithub.view_model.FavoriteViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
     // Variable Setup
-    private val detailViewModel by viewModels<DetailViewModel>()
     private var binding: ActivityDetailBinding? = null
+    private val detailViewModel by viewModels<DetailViewModel>()
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        // Set variable
+        favoriteViewModel = obtainViewModel(this@DetailActivity)
 
         // Setup title action bar
         val actionBar = supportActionBar
@@ -35,6 +42,11 @@ class DetailActivity : AppCompatActivity() {
             user?.let { userData ->
                 // Set title
                 actionBar?.title = userData.login
+
+                // Observer floating button
+                favoriteViewModel.isFavoriteUser(userData.login).observe(this, {
+                    whichFloatingButton(it)
+                })
 
                 // Initiate view model
                 detailViewModel.getDetailUser(userData.login)
@@ -69,6 +81,23 @@ class DetailActivity : AppCompatActivity() {
                 TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
                     tab.text = resources.getString(TAB_TITLES[position])
                 }.attach()
+
+                // Set floating button onclick listener
+                with(binding) {
+                    btnFavorite.setOnClickListener {
+                        favoriteViewModel.insert(userData)
+                    }
+                    btnDelete.setOnClickListener {
+                        favoriteViewModel.delete(userData)
+                    }
+                }
+
+                // Observe notification favorite
+                favoriteViewModel.notificationText.observe(this, {
+                    it.getContentIfNotHandled()?.let { text ->
+                        showSnackBar(binding.root, text)
+                    }
+                })
             }
         }
     }
@@ -112,6 +141,17 @@ class DetailActivity : AppCompatActivity() {
             text,
             Snackbar.LENGTH_SHORT
         ).show()
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity) : FavoriteViewModel {
+        val factory = FavoriteViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[FavoriteViewModel::class.java]
+    }
+
+
+    private fun whichFloatingButton(isDelete: Boolean) {
+        binding?.btnDelete?.visibility = if (isDelete) View.VISIBLE else View.GONE
+        binding?.btnFavorite?.visibility = if (isDelete) View.GONE else View.VISIBLE
     }
 
     // Setup Variable

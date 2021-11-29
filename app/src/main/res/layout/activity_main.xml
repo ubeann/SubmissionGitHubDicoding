@@ -17,11 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_item_user" />
 
-    <FrameLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id="@+id/fragment_container" />
-
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
